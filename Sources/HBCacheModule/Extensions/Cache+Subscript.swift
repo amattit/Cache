@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Cache {
+public extension Cache {
     subscript(key: Key) -> Value? {
         get { return value(forKey: key) }
         set {

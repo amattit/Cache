@@ -57,12 +57,26 @@
             }
         }
         
+        func testReplaceDataByNil() {
+            let cache = Cache<String, [Int]>()
+            let array = [1, 2, 3, 4, 5]
+            
+            cache["first"] = array
+            cache["first"] = nil
+            
+            guard let _ = cache["first"] else {
+                XCTAssertTrue(true)
+                return
+            }
+            XCTFail()
+        }
+        
         func testSaveToFile() {
             let cache = Cache<String, [Int]>()
             let array = [1, 2, 3, 4, 5]
             cache["first"] = array
             do {
-                try cache.saveToDisk(withName: "first")
+                try cache.saveToDisk(withName: "first", using: .default)
             } catch {
                 XCTFail(error.localizedDescription)
             }
@@ -73,9 +87,9 @@
             let array = [1, 2, 3, 4, 5]
             cache["first"] = array
             do {
-                try cache.saveToDisk(withName: "first")
+                try cache.saveToDisk(withName: "first", using: .default)
                 
-                let c = try cache.loadFromDisk(withName: "first").value(forKey: "first")!
+                let c = try cache.loadFromDisk(withName: "first", using: .default).value(forKey: "first")!
                 for i in 0 ..< array.count {
                     XCTAssert(array[i] == c[i])
                 }
